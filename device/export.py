@@ -346,8 +346,8 @@ def main():
 
     #################################################################################################
     # generate context
-    shutil.copy(str(Path(__file__).parent.parent.joinpath('assets', 'sm8650_htp_basic_config.json')), qnn_dir)
-    shutil.copy(str(Path(__file__).parent.parent.joinpath('assets', 'sm8650_htp_ext_config.json')), qnn_dir)
+    shutil.copy(str(Path(__file__).parent.parent.joinpath('assets', 'sm8550_htp_basic_config.json')), qnn_dir)
+    shutil.copy(str(Path(__file__).parent.parent.joinpath('assets', 'sm8550_htp_ext_config.json')), qnn_dir)
 
     qnn_command = [
         "qnn-context-binary-generator", 
@@ -355,7 +355,7 @@ def main():
         "--backend", osp.join(qnn_sdk_root, "lib/x86_64-linux-clang/libQnnHtp.so") ,
         "--binary_file", "qnn_model",
         "--output_dir", qnn_dir, 
-        "--config_file", "sm8650_htp_basic_config.json",
+        "--config_file", "sm8550_htp_basic_config.json",
     ]
     result = subprocess.run(qnn_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env, cwd=qnn_dir)
     print(result.stdout)
@@ -372,8 +372,8 @@ def main():
         print(msg.stdout.decode('utf-8'))
     msg = subprocess.run(['adb', 'push', osp.join(args.output_dir, 'htp_file.txt'), args.device_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('Pushing config files...')
-    msg = subprocess.run(['adb', 'push', osp.join(qnn_dir, 'sm8650_htp_basic_config.json'), args.device_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    msg = subprocess.run(['adb', 'push', osp.join(qnn_dir, 'sm8650_htp_ext_config.json'), args.device_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    msg = subprocess.run(['adb', 'push', osp.join(qnn_dir, 'sm8550_htp_basic_config.json'), args.device_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    msg = subprocess.run(['adb', 'push', osp.join(qnn_dir, 'sm8550_htp_ext_config.json'), args.device_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print(msg.stdout.decode('utf-8'))
     print('Pushing lib files...')
     for x in ["libQnnHtp.so", "libQnnHtpNetRunExtensions.so", "libQnnHtpPrepare.so", "libQnnHtpV75Stub.so"]:
@@ -398,7 +398,7 @@ def main():
         "--input_list=htp_file.txt",
         f"--output_dir={args.device_path}",
         "--shared_buffer","--profiling_level=basic",
-        "--config_file=sm8650_htp_basic_config.json",
+        "--config_file=sm8550_htp_basic_config.json",
     ]
     result = subprocess.run(qnn_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env, cwd=qnn_dir)
     if msg.returncode:
